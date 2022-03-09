@@ -1,5 +1,6 @@
 .idea/
 target/
 tomcat.8082/
+config.properties
 *.iml
 .DS_Store
