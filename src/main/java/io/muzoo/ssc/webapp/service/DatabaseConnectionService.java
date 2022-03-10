@@ -15,7 +15,7 @@ public class DatabaseConnectionService {
     /*
      * database connection pool using hikari library
      * the secret and variables are loaded from disk
-     * the file config,properties is not committed to git repository
+     * the file config.properties is not committed to git repository
      */
     public DatabaseConnectionService() {
         ds = new HikariDataSource();

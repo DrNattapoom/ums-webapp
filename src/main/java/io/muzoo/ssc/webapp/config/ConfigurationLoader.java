@@ -18,13 +18,12 @@ public class ConfigurationLoader {
             String username = properties.getProperty("database.username");
             String password = properties.getProperty("database.password");
             // create the configuration
-            ConfigurationProperties configurationProperties = new ConfigurationProperties.ConfigurationPropertiesBuilder()
+            return new ConfigurationProperties.ConfigurationPropertiesBuilder()
                     .databaseDriverClassName(driverClassName)
                     .databaseConnectionUrl(connectionUrl)
                     .databaseUsername(username)
                     .databasePassword(password)
                     .build();
-            return configurationProperties;
         } catch (Exception e) {
             throw new RuntimeException("unable to read config.properties");
         }
