@@ -5,6 +5,8 @@ import lombok.Setter;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserService {
 
@@ -18,6 +20,7 @@ public class UserService {
 
     private static final String INSERT_USER_SQL = "INSERT INTO user (username, password, display_name) VALUES (?, ?, ?);";
     private static final String SELECT_USER_SQL = "SELECT * FROM user WHERE username = ?;";
+    private static final String SELECT_ALL_SQL = "SELECT * FROM user;";
 
     @Setter
     private DatabaseConnectionService databaseConnectionService;
@@ -60,17 +63,45 @@ public class UserService {
                     resultSet.getString("display_name")
             );
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("SQLException: " + e.getMessage());
+            e.printStackTrace();
             return null;
         }
+    }
+
+    // list all users
+    public List<User> getAllUsers() {
+        List<User> users = new ArrayList<>();
+        try {
+            Connection connection = databaseConnectionService.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_SQL);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                users.add(
+                    new User(
+                            resultSet.getLong("id"),
+                            resultSet.getString("username"),
+                            resultSet.getString("password"),
+                            resultSet.getString("display_name")
+                    )
+                );
+            }
+            return users;
+        } catch (SQLException e) {
+            System.out.println("SQLException: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return users;
     }
 
     public static void main(String[] args) throws UserServiceException {
 
         UserService userService = new UserService();
         userService.setDatabaseConnectionService(new DatabaseConnectionService());
-        User user = userService.getUserByUsername("DrPoom");
-        System.out.println(user.getUsername());
+        List<User> users = userService.getAllUsers();
+        for (User user : users) {
+            System.out.println(user.getUsername());
+        }
 
     }
 
