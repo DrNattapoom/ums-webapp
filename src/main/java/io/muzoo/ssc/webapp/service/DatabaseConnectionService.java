@@ -8,7 +8,12 @@ import com.zaxxer.hikari.HikariDataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/*
+ * singleton design pattern
+ */
 public class DatabaseConnectionService {
+
+    private static DatabaseConnectionService databaseConnectionService;
 
     private final HikariDataSource ds;
 
@@ -30,6 +35,13 @@ public class DatabaseConnectionService {
 
     public Connection getConnection() throws SQLException {
         return ds.getConnection();
+    }
+
+    public static DatabaseConnectionService getInstance() {
+        if (databaseConnectionService == null) {
+            databaseConnectionService = new DatabaseConnectionService();
+        }
+        return databaseConnectionService;
     }
 
 }

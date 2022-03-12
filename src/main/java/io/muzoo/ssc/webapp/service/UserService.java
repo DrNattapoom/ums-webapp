@@ -8,6 +8,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+ * singleton design pattern
+ */
 public class UserService {
 
     /*
@@ -18,12 +21,25 @@ public class UserService {
      * update user by user id
      */
 
+    private static UserService userService;
+
     private static final String INSERT_USER_SQL = "INSERT INTO user (username, password, display_name) VALUES (?, ?, ?);";
     private static final String SELECT_USER_SQL = "SELECT * FROM user WHERE username = ?;";
     private static final String SELECT_ALL_SQL = "SELECT * FROM user;";
 
     @Setter
     private DatabaseConnectionService databaseConnectionService;
+
+    private UserService() {
+    }
+
+    public static UserService getInstance() {
+        if (userService == null) {
+            userService = new UserService();
+            userService.setDatabaseConnectionService(DatabaseConnectionService.getInstance());
+        }
+        return userService;
+    }
 
     // create new user
     public void createUser(String username, String password, String displayName) throws UserServiceException {
@@ -111,8 +127,8 @@ public class UserService {
 
     public static void main(String[] args) throws UserServiceException {
 
-        UserService userService = new UserService();
-        userService.setDatabaseConnectionService(new DatabaseConnectionService());
+        UserService userService = UserService.getInstance();
+        userService.createUser("admin", "12345", "Admin");
         List<User> users = userService.getAllUsers();
         for (User user : users) {
             System.out.println(user.getUsername());

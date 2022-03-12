@@ -7,6 +7,8 @@ package io.muzoo.ssc.webapp.servlet;
 
 import io.muzoo.ssc.webapp.Routable;
 import io.muzoo.ssc.webapp.service.SecurityService;
+import io.muzoo.ssc.webapp.service.UserService;
+
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -35,6 +37,7 @@ public class HomeServlet extends HttpServlet implements Routable {
             // do MVC in here
             String username = (String) request.getSession().getAttribute("username");
             request.setAttribute("username", username);
+            request.setAttribute("users", UserService.getInstance().getAllUsers());
             RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/home.jsp");
             rd.include(request, response);
         } else {

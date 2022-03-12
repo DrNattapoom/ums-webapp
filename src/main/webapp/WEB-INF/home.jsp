@@ -3,5 +3,6 @@
 <html>
 <body>
 <h2>Welcome, ${username}</h2>
+<h2>${users}</h2>
 </body>
 </html>

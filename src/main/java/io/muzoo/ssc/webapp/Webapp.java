@@ -4,6 +4,8 @@ import java.io.File;
 import javax.servlet.ServletException;
 
 import io.muzoo.ssc.webapp.service.SecurityService;
+import io.muzoo.ssc.webapp.service.UserService;
+
 import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.startup.Tomcat;
@@ -18,6 +20,8 @@ public class Webapp {
         tomcat.setPort(8082);
 
         SecurityService securityService = new SecurityService();
+        securityService.setUserService(UserService.getInstance());
+
         ServletRouter servletRouter = new ServletRouter();
         servletRouter.setSecurityService(securityService);
 
