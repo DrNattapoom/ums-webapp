@@ -94,6 +94,21 @@ public class UserService {
         return users;
     }
 
+    // delete user
+    public void deleteUserByUsername() {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    // update user display name by user id
+    public void updateUserById(long id, String displayName) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    // change user password
+    public void changePassword() {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+
     public static void main(String[] args) throws UserServiceException {
 
         UserService userService = new UserService();
