@@ -6,7 +6,6 @@
 package io.muzoo.ssc.webapp.servlet;
 
 import io.muzoo.ssc.webapp.Routable;
-import io.muzoo.ssc.webapp.model.User;
 import io.muzoo.ssc.webapp.service.SecurityService;
 import io.muzoo.ssc.webapp.service.UserService;
 
@@ -42,8 +41,14 @@ public class HomeServlet extends HttpServlet implements Routable {
             request.setAttribute("users", userService.getAllUsers());
             RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/home.jsp");
             rd.include(request, response);
+            // flash session: remove the attributes right after they are used
+            request.removeAttribute("hasError");
+            request.removeAttribute("message");
         } else {
+            request.removeAttribute("hasError");
+            request.removeAttribute("message");
             response.sendRedirect("/login");
         }
     }
+
 }

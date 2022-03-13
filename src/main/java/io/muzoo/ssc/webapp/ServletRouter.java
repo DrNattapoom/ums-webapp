@@ -1,5 +1,6 @@
 package io.muzoo.ssc.webapp;
 
+import io.muzoo.ssc.webapp.servlet.DeleteUserServlet;
 import io.muzoo.ssc.webapp.servlet.HomeServlet;
 import io.muzoo.ssc.webapp.service.SecurityService;
 import io.muzoo.ssc.webapp.servlet.LoginServlet;
@@ -19,6 +20,7 @@ public class ServletRouter {
         routables.add(HomeServlet.class);
         routables.add(LoginServlet.class);
         routables.add(LogoutServlet.class);
+        routables.add(DeleteUserServlet.class);
     }
 
     private SecurityService securityService;

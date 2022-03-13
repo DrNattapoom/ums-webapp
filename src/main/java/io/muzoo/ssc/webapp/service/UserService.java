@@ -24,6 +24,7 @@ public class UserService {
     private static UserService userService;
 
     private static final String INSERT_USER_SQL = "INSERT INTO user (username, password, display_name) VALUES (?, ?, ?);";
+    private static final String DELETE_USER_SQL = "DELETE FROM user WHERE username = ?;";
     private static final String SELECT_USER_SQL = "SELECT * FROM user WHERE username = ?;";
     private static final String SELECT_ALL_USERS_SQL = "SELECT * FROM user;";
 
@@ -96,10 +97,10 @@ public class UserService {
             while (resultSet.next()) {
                 users.add(
                     new User(
-                            resultSet.getLong("id"),
-                            resultSet.getString("username"),
-                            resultSet.getString("password"),
-                            resultSet.getString("display_name")
+                        resultSet.getLong("id"),
+                        resultSet.getString("username"),
+                        resultSet.getString("password"),
+                        resultSet.getString("display_name")
                     )
                 );
             }
@@ -111,8 +112,19 @@ public class UserService {
     }
 
     // delete user
-    public void deleteUserByUsername() {
-        throw new UnsupportedOperationException("not yet implemented");
+    public boolean deleteUserByUsername(String username) {
+        try (
+            Connection connection = databaseConnectionService.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(DELETE_USER_SQL);
+        ) {
+            // set username to select the user
+            preparedStatement.setString(1, username);
+            int count = preparedStatement.executeUpdate();
+            connection.commit();
+            return count > 0;
+        } catch (SQLException e) {
+            return false;
+        }
     }
 
     // update user display name by user id
@@ -128,7 +140,7 @@ public class UserService {
     public static void main(String[] args) throws UserServiceException {
 
         UserService userService = UserService.getInstance();
-        userService.createUser("admin", "12345", "Admin");
+        userService.createUser("test", "12345", "Test");
         List<User> users = userService.getAllUsers();
         for (User user : users) {
             System.out.println(user.getUsername());

@@ -28,7 +28,6 @@ public class Webapp {
         try {
             ctx = tomcat.addWebapp("", docBase.getAbsolutePath());
             servletRouter.init(ctx);
-
             tomcat.start();
             tomcat.getServer().await();
         } catch (LifecycleException ex) {
