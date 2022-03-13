@@ -1,7 +1,6 @@
 package io.muzoo.ssc.webapp;
 
 import java.io.File;
-import javax.servlet.ServletException;
 
 import io.muzoo.ssc.webapp.service.SecurityService;
 import io.muzoo.ssc.webapp.service.UserService;
@@ -32,7 +31,7 @@ public class Webapp {
 
             tomcat.start();
             tomcat.getServer().await();
-        } catch (ServletException | LifecycleException ex) {
+        } catch (LifecycleException ex) {
             ex.printStackTrace();
         }
 

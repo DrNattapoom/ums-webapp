@@ -79,8 +79,6 @@ public class UserService {
                     resultSet.getString("display_name")
             );
         } catch (SQLException e) {
-            System.out.println("SQLException: " + e.getMessage());
-            e.printStackTrace();
             return null;
         }
     }
