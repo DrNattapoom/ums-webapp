@@ -1,9 +1,9 @@
 package io.muzoo.ssc.webapp.service;
 
-import javax.servlet.http.HttpServletRequest;
-
 import io.muzoo.ssc.webapp.model.User;
+
 import org.mindrot.jbcrypt.BCrypt;
+import javax.servlet.http.HttpServletRequest;
 
 public class SecurityService {
 

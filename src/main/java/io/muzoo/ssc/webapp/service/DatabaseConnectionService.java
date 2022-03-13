@@ -4,7 +4,6 @@ import io.muzoo.ssc.webapp.config.ConfigurationLoader;
 import io.muzoo.ssc.webapp.config.ConfigurationProperties;
 
 import com.zaxxer.hikari.HikariDataSource;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 

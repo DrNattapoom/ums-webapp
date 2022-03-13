@@ -1,9 +1,9 @@
 package io.muzoo.ssc.webapp.service;
 
 import io.muzoo.ssc.webapp.model.User;
+
 import lombok.Setter;
 import org.mindrot.jbcrypt.BCrypt;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

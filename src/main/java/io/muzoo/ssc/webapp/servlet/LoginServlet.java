@@ -1,14 +1,15 @@
 package io.muzoo.ssc.webapp.servlet;
 
 import io.muzoo.ssc.webapp.service.SecurityService;
-import java.io.IOException;
+import io.muzoo.ssc.webapp.Routable;
+
+import org.apache.commons.lang.StringUtils;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.lang.StringUtils;
-import io.muzoo.ssc.webapp.Routable;
+import java.io.IOException;
 
 public class LoginServlet extends HttpServlet implements Routable {
 
