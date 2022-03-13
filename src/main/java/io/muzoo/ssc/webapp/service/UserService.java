@@ -25,7 +25,7 @@ public class UserService {
 
     private static final String INSERT_USER_SQL = "INSERT INTO user (username, password, display_name) VALUES (?, ?, ?);";
     private static final String SELECT_USER_SQL = "SELECT * FROM user WHERE username = ?;";
-    private static final String SELECT_ALL_SQL = "SELECT * FROM user;";
+    private static final String SELECT_ALL_USERS_SQL = "SELECT * FROM user;";
 
     @Setter
     private DatabaseConnectionService databaseConnectionService;
@@ -45,9 +45,10 @@ public class UserService {
     public void createUser(String username, String password, String displayName) throws UserServiceException {
         // salt and hash password using bcrypt library
         String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
-        try {
+        try (
             Connection connection = databaseConnectionService.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USER_SQL);
+        ) {
             // set username, password, and display name columns to insert the user
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, hashedPassword);
@@ -65,9 +66,10 @@ public class UserService {
 
     // get user by username
     public User getUserByUsername(String username) {
-        try {
+        try (
             Connection connection = databaseConnectionService.getConnection();
             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USER_SQL);
+        ) {
             // set username to select the user
             preparedStatement.setString(1, username);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -86,9 +88,10 @@ public class UserService {
     // list all users
     public List<User> getAllUsers() {
         List<User> users = new ArrayList<>();
-        try {
+        try (
             Connection connection = databaseConnectionService.getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_SQL);
+            PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_USERS_SQL);
+        ) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 users.add(
@@ -100,7 +103,6 @@ public class UserService {
                     )
                 );
             }
-            return users;
         } catch (SQLException e) {
             System.out.println("SQLException: " + e.getMessage());
             e.printStackTrace();
