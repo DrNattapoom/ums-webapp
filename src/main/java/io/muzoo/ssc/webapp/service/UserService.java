@@ -140,7 +140,6 @@ public class UserService {
     public static void main(String[] args) throws UserServiceException {
 
         UserService userService = UserService.getInstance();
-        userService.createUser("DrPoom", "12345", "Nattapoom");
         userService.createUser("test", "12345", "Test");
         List<User> users = userService.getAllUsers();
         for (User user : users) {
