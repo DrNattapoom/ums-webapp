@@ -3,8 +3,6 @@ package io.muzoo.ssc.webapp.servlet;
 import io.muzoo.ssc.webapp.service.SecurityService;
 import io.muzoo.ssc.webapp.Routable;
 
-import org.apache.commons.lang.StringUtils;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -18,8 +16,7 @@ public class LogoutServlet extends HttpServlet implements Routable {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         securityService.logout(request);
-        RequestDispatcher rd = request.getRequestDispatcher("WEB-INF/login.jsp");
-        rd.include(request, response);
+        response.sendRedirect("/login");
     }
 
     @Override
