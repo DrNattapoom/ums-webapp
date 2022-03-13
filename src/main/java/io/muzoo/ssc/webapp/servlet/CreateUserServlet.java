@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package io.muzoo.ssc.webapp.servlet;
 
 import io.muzoo.ssc.webapp.Routable;
@@ -16,13 +11,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class HomeServlet extends HttpServlet implements Routable {
+public class CreateUserServlet extends HttpServlet implements Routable {
 
     private SecurityService securityService;
 
     @Override
     public String getMapping() {
-        return "/index.jsp";
+        return "/user/create";
     }
 
     @Override
@@ -37,9 +32,8 @@ public class HomeServlet extends HttpServlet implements Routable {
             // do MVC in here
             String username = (String) request.getSession().getAttribute("username");
             UserService userService = UserService.getInstance();
-            request.setAttribute("currentUser", userService.getUserByUsername(username));
-            request.setAttribute("users", userService.getAllUsers());
-            RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/home.jsp");
+            request.setAttribute("user", userService.getUserByUsername(username));
+            RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/create.jsp");
             rd.include(request, response);
             // flash session: remove the attributes right after they are used
             request.getSession().removeAttribute("hasError");

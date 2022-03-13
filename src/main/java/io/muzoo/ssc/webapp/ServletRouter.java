@@ -1,10 +1,7 @@
 package io.muzoo.ssc.webapp;
 
-import io.muzoo.ssc.webapp.servlet.DeleteUserServlet;
-import io.muzoo.ssc.webapp.servlet.HomeServlet;
+import io.muzoo.ssc.webapp.servlet.*;
 import io.muzoo.ssc.webapp.service.SecurityService;
-import io.muzoo.ssc.webapp.servlet.LoginServlet;
-import io.muzoo.ssc.webapp.servlet.LogoutServlet;
 
 import org.apache.catalina.Context;
 import org.apache.catalina.startup.Tomcat;
@@ -20,6 +17,7 @@ public class ServletRouter {
         routables.add(HomeServlet.class);
         routables.add(LoginServlet.class);
         routables.add(LogoutServlet.class);
+        routables.add(CreateUserServlet.class);
         routables.add(DeleteUserServlet.class);
     }
 
