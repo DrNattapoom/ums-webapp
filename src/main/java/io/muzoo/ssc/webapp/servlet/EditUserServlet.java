@@ -1,6 +1,7 @@
 package io.muzoo.ssc.webapp.servlet;
 
 import io.muzoo.ssc.webapp.Routable;
+import io.muzoo.ssc.webapp.model.User;
 import io.muzoo.ssc.webapp.service.SecurityService;
 import io.muzoo.ssc.webapp.service.UserService;
 
@@ -12,13 +13,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class CreateUserServlet extends HttpServlet implements Routable {
+public class EditUserServlet extends HttpServlet implements Routable {
 
     private SecurityService securityService;
 
     @Override
     public String getMapping() {
-        return "/user/create";
+        return "/user/edit";
     }
 
     @Override
@@ -31,7 +32,17 @@ public class CreateUserServlet extends HttpServlet implements Routable {
         boolean authorized = securityService.isAuthorized(request);
         if (authorized) {
             // do MVC in here
-            RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/create.jsp");
+            String username = StringUtils.trim(request.getParameter("username")); // from query
+
+            UserService userService = UserService.getInstance();
+            User user = userService.getUserByUsername(username);
+
+            // prefill the form
+            request.setAttribute("user", user);
+            request.setAttribute("username", user.getUsername());
+            request.setAttribute("displayName", user.getDisplayName());
+
+            RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/edit.jsp");
             rd.include(request, response);
             // flash session: remove the attributes right after they are used
             request.getSession().removeAttribute("hasError");
@@ -49,40 +60,35 @@ public class CreateUserServlet extends HttpServlet implements Routable {
         if (authorized) {
             // do MVC in here
 
+            // user is only allowed to edit display name
             // ensure that the username and the display name do not contain loading and tailing spaces
-            String username = StringUtils.trim(request.getParameter("username"));
+            String username = StringUtils.trim(request.getParameter("username")); // from query
             String displayName = StringUtils.trim(request.getParameter("displayName"));
-            String password = request.getParameter("password");
-            String cpassword = request.getParameter("cpassword");
 
             UserService userService = UserService.getInstance();
+            User user = userService.getUserByUsername(username);
 
             String errorMessage = null;
             // check if username is valid
-            if (userService.getUserByUsername(username) != null) {
-                // username has already been taken
-                errorMessage = String.format("username %s has already been taken", username);
+            if (user == null) {
+                // user does not exist
+                errorMessage = String.format("user %s does not exist", username);
             }
             // check if display name is valid
             else if (StringUtils.isBlank(displayName)) {
                 // display name cannot be blank
                 errorMessage = "display name cannot be blank";
             }
-            // check if confirmed password is match with the password
-            else if (!StringUtils.equals(password, cpassword)) {
-                // confirmed password does not match
-                errorMessage = "confirmed password does not match";
-            }
 
             if (errorMessage != null) {
                 request.getSession().setAttribute("hasError", true);
                 request.getSession().setAttribute("message", errorMessage);
             } else {
-                // create new user
+                // update new user
                 try {
-                    userService.createUser(username, password, displayName);
+                    userService.editUserByUsername(username, displayName);
                     request.getSession().setAttribute("hasError", false);
-                    request.getSession().setAttribute("message", String.format("user %s has been created successfully", username));
+                    request.getSession().setAttribute("message", String.format("user %s has been updated successfully", username));
                     // if success, then redirect
                     response.sendRedirect("/");
                     return;
@@ -93,12 +99,10 @@ public class CreateUserServlet extends HttpServlet implements Routable {
             }
 
             // if failed, then reach here
-            // keep the form filled
+            // prefill the form
             request.setAttribute("username", username);
             request.setAttribute("displayName", displayName);
-            request.setAttribute("password", password);
-            request.setAttribute("cpassword", cpassword);
-            RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/create.jsp");
+            RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/edit.jsp");
             rd.include(request, response);
             // flash session: remove the attributes right after they are used
             request.getSession().removeAttribute("hasError");

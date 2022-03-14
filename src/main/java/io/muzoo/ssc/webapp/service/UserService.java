@@ -25,6 +25,7 @@ public class UserService {
 
     private static final String INSERT_USER_SQL = "INSERT INTO user (username, password, display_name) VALUES (?, ?, ?);";
     private static final String DELETE_USER_SQL = "DELETE FROM user WHERE username = ?;";
+    private static final String UPDATE_USER_SQL = "UPDATE user SET display_name = ? WHERE username = ?;";
     private static final String SELECT_USER_SQL = "SELECT * FROM user WHERE username = ?;";
     private static final String SELECT_ALL_USERS_SQL = "SELECT * FROM user;";
 
@@ -127,9 +128,22 @@ public class UserService {
         }
     }
 
-    // update user display name by user id
-    public void updateUserById(long id, String displayName) {
-        throw new UnsupportedOperationException("not yet implemented");
+    // update user display name by user username
+    public void editUserByUsername(String username, String displayName) throws UserServiceException {
+        try (
+            Connection connection = databaseConnectionService.getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(UPDATE_USER_SQL);
+        ) {
+            // set username and display name columns to insert the user
+            preparedStatement.setString(1, displayName);
+            preparedStatement.setString(2, username);
+            // execute the sql
+            preparedStatement.executeUpdate();
+            // commit the change
+            connection.commit();
+        } catch (SQLException e) {
+            throw new UserServiceException(e.getMessage());
+        }
     }
 
     // change user password
