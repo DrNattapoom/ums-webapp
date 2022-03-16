@@ -46,9 +46,9 @@
     </c:if>
     <div class = "row justify-content-md-center">
         <div class = "col-sm-12 col-md-6 col-lg-4 mt-5">
-            <h2 class = "text-center mb-4">Change User (${user.username}) Password</h2>
+            <h2 class = "text-center mb-4">Change User (${username}) Password</h2>
             <p>${error}</p>
-            <form action = "/user/password?username=${user.username}" method = "post" autocomplete = "off">
+            <form action = "/user/password?username=${username}" method = "post" autocomplete = "off">
                 <div class = "input-group mb-4 input-group-md">
                             <span class = "input-group-text" id = "password" style = "width: 40px">
                                 <i class = "fa fa-key"></i>

@@ -49,14 +49,14 @@ public class DeleteUserServlet extends HttpServlet implements Routable {
                 String message = (sameAccount) ? "user cannot delete one's own account" : (hasError) ? "unable to delete user %s" : "user %s is successfully deleted";
                 // note: the attributes are added to the session, and they will persist unless they are removed from the session
                 // so, they are needed to be deleted when they are read next time
-                // since in every case it will redirect to the home page, we will remove these attributes in the home servlet
+                // since in every case it will redirect to the /users page, we will remove these attributes in the /users servlet
                 request.getSession().setAttribute("hasError", hasError);
                 request.getSession().setAttribute("message", String.format(message, toBeDeleted.getUsername()));
             } catch (Exception e) {
                 request.getSession().setAttribute("hasError", true);
                 request.getSession().setAttribute("message", String.format("unable to delete user %s", request.getParameter("username")));
             }
-            response.sendRedirect("/");
+            response.sendRedirect("/users");
         } else {
             response.sendRedirect("/login");
         }

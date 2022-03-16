@@ -46,9 +46,9 @@
             </c:if>
             <div class = "row justify-content-md-center">
                 <div class = "col-sm-12 col-md-6 col-lg-4 mt-5">
-                    <h2 class = "text-center mb-4">Edit User (${user.username})</h2>
+                    <h2 class = "text-center mb-4">Edit User (${username})</h2>
                     <p>${error}</p>
-                    <form action = "/user/edit?username=${user.username}" method = "post" autocomplete = "off">
+                    <form action = "/user/edit?username=${username}" method = "post" autocomplete = "off">
                         <div class = "input-group mb-4 input-group-md">
                             <span class = "input-group-text" id = "displayName" style = "width: 40px">
                                 <i class = "fa fa-user"></i>
